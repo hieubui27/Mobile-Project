@@ -1,0 +1,29 @@
+.Header{
+    background-color: #DDDDDD;
+    display: flex;
+    padding: 10px 30px;
+    justify-content: space-between;
+    &__logo{
+        width: 30%;
+        text-align: center;
+        img{
+            object-fit: cover;
+            height: 80px;
+        }
+    }
+    &__menu{
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        ul{
+            list-style-type: none;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            li{
+                text-decoration: none;
+            }
+        }
+    }
+}
