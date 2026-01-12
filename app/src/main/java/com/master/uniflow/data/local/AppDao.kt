@@ -7,18 +7,29 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AppDao {
-    @Query("SELECT * FROM subjects")
-    fun getAllSubjects(): Flow<List<SubjectEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Upsert
+    suspend fun upsertUser(user: UserEntity)
+
+    @Query("SELECT * FROM users WHERE userId = :id")
+    suspend fun getUserById(id: String = "local_user"): UserEntity?
+
+    @Upsert
     suspend fun upsertSubject(subject: SubjectEntity)
 
-    @Query("SELECT * FROM tasks ORDER BY deadline ASC")
-    fun getAllTasks(): Flow<List<TaskEntity>>
+    @Query("SELECT * FROM subjects")
+    fun getAllSubjects(): kotlinx.coroutines.flow.Flow<List<SubjectEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsertTask(task: TaskEntity)
+    @Upsert
+    suspend fun upsertSchedule(schedule: ScheduleEntity)
 
-    @Query("SELECT * FROM tasks WHERE isSynced = 0")
-    suspend fun getUnsyncedTasks(): List<TaskEntity>
+    @Query("SELECT * FROM schedules WHERE subjectId = :subId")
+    suspend fun getSchedulesBySubject(subId: String): List<ScheduleEntity>
+
+    @Query("""
+        SELECT tasks.*, subjects.colorHex FROM tasks 
+        INNER JOIN subjects ON tasks.subjectId = subjects.subjectId 
+        ORDER BY deadline ASC
+    """)
+    fun getTasksWithMetadata(): kotlinx.coroutines.flow.Flow<List<TaskEntity>>
 }

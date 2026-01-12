@@ -3,10 +3,10 @@ package com.master.uniflow.data.local.model
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import java.util.UUID
+
 
 @Entity(
-    tableName = "tasks",
+    tableName = "schedules",
     foreignKeys = [
         ForeignKey(
             entity = SubjectEntity::class,
@@ -16,12 +16,11 @@ import java.util.UUID
         )
     ]
 )
-data class TaskEntity(
-    @PrimaryKey val taskId: String = UUID.randomUUID().toString(),
+data class ScheduleEntity(
+    @PrimaryKey(autoGenerate = true) val scheduleId: Int = 0,
     val subjectId: String,
-    val title: String,
-    val description: String? = null,
-    val deadline: Long, // Timestamp
-    val priority: Int,  // 1: Cao, 2: Trung bình, 3: Thấp
-    val isDone: Boolean = false
+    val dayOfWeek: Int, // 2 -> 8 (Thứ 2 -> CN)
+    val startTime: String, // "07:00"
+    val endTime: String,   // "09:30"
+    val room: String
 )

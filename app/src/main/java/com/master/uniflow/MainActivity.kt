@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.master.uniflow.data.local.AppDatabase
 import com.master.uniflow.data.local.model.SubjectEntity
+import com.master.uniflow.data.local.model.UserEntity
 import com.master.uniflow.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,7 +22,13 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch(Dispatchers.IO) {
             // Chèn thử một môn học mẫu
-            val testSubject = SubjectEntity(name = "Lập trình Android", teacher = "Giảng viên A")
+            val defaultUser = UserEntity(
+                userId = "local_user",
+                fullName = "Default Student",
+                studentCode = "0000"
+            )
+            dao.upsertUser(defaultUser)
+            val testSubject = SubjectEntity(subjectName = "Lập trình Android", classCode = "165663", teacherName = "Giảng viên A")
             dao.upsertSubject(testSubject)
         }
         // 1. Khởi tạo binding
